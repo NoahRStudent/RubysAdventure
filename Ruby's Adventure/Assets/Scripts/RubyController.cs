@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class RubyController : MonoBehaviour
@@ -10,6 +11,9 @@ public class RubyController : MonoBehaviour
     public int maxHealth = 5;
 
     public GameObject projectilePrefab;
+
+    public AudioClip throwSound;
+    public AudioClip hitSound;
 
     public int health { get { return currentHealth; } }
     int currentHealth;
@@ -25,6 +29,15 @@ public class RubyController : MonoBehaviour
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
 
+    AudioSource audioSource;
+
+    public int score;
+    public GameObject scoreText;
+
+    bool gameOver = false;
+    public GameObject gameOverText;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +45,8 @@ public class RubyController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         currentHealth = maxHealth;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -63,6 +78,40 @@ public class RubyController : MonoBehaviour
         {
             Launch();
         }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1.5f, LayerMask.GetMask("NPC"));
+            if (hit.collider != null)
+            {
+                NonPlayerCharacter character = hit.collider.GetComponent<NonPlayerCharacter>();
+                if (character != null)
+                {
+                    character.DisplayDialog();
+                }
+            }
+        }
+
+        if (gameOver == true)
+        {
+            speed = 0f;
+
+        }
+
+        if (Input.GetKey(KeyCode.R))
+
+        {
+
+            if (gameOver == true)
+
+            {
+
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // this loads the currently active scene
+
+            }
+
+        }
+
     }
 
     void FixedUpdate()
@@ -72,6 +121,12 @@ public class RubyController : MonoBehaviour
         position.y = position.y + speed * vertical * Time.deltaTime;
 
         rigidbody2d.MovePosition(position);
+
+        if (currentHealth <= 0)
+        {
+            gameOver = true;
+            gameOverText.SetActive(true);
+        }
     }
 
     public void ChangeHealth(int amount)
@@ -83,10 +138,13 @@ public class RubyController : MonoBehaviour
 
             isInvincible = true;
             invincibleTimer = timeInvincible;
+
+            PlaySound(hitSound);
         }
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        Debug.Log(currentHealth + "/" + maxHealth);
+
+        UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
     }
 
     void Launch()
@@ -97,5 +155,19 @@ public class RubyController : MonoBehaviour
         projectile.Launch(lookDirection, 300);
 
         animator.SetTrigger("Launch");
+
+        PlaySound(throwSound);
     }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+    }
+
+    /*public void ChangeScore(int scoreAmount)
+    {
+        score += scoreAmount;
+        scoreText.text = "Fixed Robots: " + score.ToString();
+    }*/
+
 }

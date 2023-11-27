@@ -6,6 +6,8 @@ public class Projectile : MonoBehaviour
 {
     Rigidbody2D rigidbody2d;
 
+   
+
     void Awake()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
@@ -30,6 +32,7 @@ public class Projectile : MonoBehaviour
         if (e != null)
         {
             e.Fix();
+            
         }
 
         Destroy(gameObject);

@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using TMPro;
+using System.Threading;
 
 public class RubyController : MonoBehaviour
 {
@@ -32,10 +33,11 @@ public class RubyController : MonoBehaviour
     AudioSource audioSource;
 
     public int score;
-    public GameObject scoreText;
+    public TMP_Text scoreText;
 
     bool gameOver = false;
     public GameObject gameOverText;
+    public GameObject gameOverWinText;
 
 
     // Start is called before the first frame update
@@ -127,6 +129,14 @@ public class RubyController : MonoBehaviour
             gameOver = true;
             gameOverText.SetActive(true);
         }
+
+        if (score >= 2)
+        {
+            gameOver = true;
+            gameOverWinText.SetActive(true);
+        }
+
+     
     }
 
     public void ChangeHealth(int amount)
@@ -164,10 +174,10 @@ public class RubyController : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
-    /*public void ChangeScore(int scoreAmount)
+    public void ChangeScore(int scoreAmount)
     {
         score += scoreAmount;
         scoreText.text = "Fixed Robots: " + score.ToString();
-    }*/
+    }
 
 }

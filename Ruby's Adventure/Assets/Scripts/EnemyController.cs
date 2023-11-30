@@ -81,7 +81,8 @@ public class EnemyController : MonoBehaviour
     {
         broken = false;
         rigidbody2D.simulated = false;
-
+        RubyController player = FindObjectOfType<RubyController>();
+        player.ChangeScore(1);
         smokeEffect.Stop();
     }
 }

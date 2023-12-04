@@ -9,6 +9,8 @@ public class NonPlayerCharacter : MonoBehaviour
     public GameObject dialogBox;
     float timerDisplay;
 
+    public AudioSource collectedClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,5 +35,6 @@ public class NonPlayerCharacter : MonoBehaviour
     {
         timerDisplay = displayTime;
         dialogBox.SetActive(true);
+       
     }
 }

@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour
     bool broken = true;
 
     Animator animator;
+ 
 
     // Start is called before the first frame update
     void Start()
@@ -80,9 +81,10 @@ public class EnemyController : MonoBehaviour
     public void Fix()
     {
         broken = false;
+        smokeEffect.Stop();
         rigidbody2D.simulated = false;
         RubyController player = FindObjectOfType<RubyController>();
         player.ChangeScore(1);
-        smokeEffect.Stop();
+     
     }
 }

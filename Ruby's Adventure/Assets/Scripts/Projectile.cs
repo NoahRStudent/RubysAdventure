@@ -32,7 +32,11 @@ public class Projectile : MonoBehaviour
         if (e != null)
         {
             e.Fix();
-            
+        }
+        Bandits a = other.collider.GetComponent<Bandits>();
+        if (a != null)
+        {
+            a.Fix();
         }
 
         Destroy(gameObject);

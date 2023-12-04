@@ -15,6 +15,7 @@ public class RubyController : MonoBehaviour
 
     public AudioClip throwSound;
     public AudioClip hitSound;
+    public AudioClip npc;
 
     public int health { get { return currentHealth; } }
     int currentHealth;
@@ -33,6 +34,7 @@ public class RubyController : MonoBehaviour
     AudioSource audioSource;
 
     public int score;
+    public int banditScore;
     public TMP_Text scoreText;
 
     bool gameOver = false;
@@ -90,6 +92,7 @@ public class RubyController : MonoBehaviour
                 if (character != null)
                 {
                     character.DisplayDialog();
+                    PlaySound(npc);
                 }
             }
         }
@@ -130,13 +133,13 @@ public class RubyController : MonoBehaviour
             gameOverText.SetActive(true);
         }
 
-        if (score >= 2)
+        if (score >= 2 && banditScore >= 2)
         {
             gameOver = true;
             gameOverWinText.SetActive(true);
         }
 
-     
+    
     }
 
     public void ChangeHealth(int amount)
@@ -180,4 +183,8 @@ public class RubyController : MonoBehaviour
         scoreText.text = "Fixed Robots: " + score.ToString();
     }
 
+    public void ChangeBanditScore(int scoreAmount)
+    {
+        banditScore += scoreAmount;
+    }
 }
